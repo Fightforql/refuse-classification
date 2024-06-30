@@ -1,0 +1,2 @@
+在使用程序时时应该修改makedic中garbage.csv的路径，文件路径一定要用绝对路径
+另外应该将achievement.csv与QandA.csv放入bulid中的debug文件夹中
