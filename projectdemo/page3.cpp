@@ -17,33 +17,27 @@ page3::page3(QWidget *parent)
     , ui(new Ui::page3)
 {
     ui->setupUi(this);
+    setWindowTitle("限时模式");
     this->resize(500,350);
-    readcsv("..\\achievement.csv");
-    //data<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n"<<"FALSE\n";
+    readcsv("achievement.csv");
     timer = new QTimer(this);
-    TimeRecord = new QTime(0, 1, 0); // 初始化 QTime 为 00:01:00
+    TimeRecord = new QTime(0,0,30); // 初始化 QTime 为 00:01:00
     Time = new QLCDNumber(this);
-    Time->setDigitCount(8);
-    Time->setStyleSheet("QLCDNumber { background-color: black; }");
-    Time->setStyleSheet("background:black;color:#00ccff;");
+    Time->setDigitCount(4);
+    Time->setSegmentStyle(QLCDNumber::Flat);
+    QPalette lcdpat = Time->palette();
+    lcdpat.setColor(QPalette::Normal,QPalette::WindowText,Qt::blue);
+    Time->setPalette(lcdpat);
+    Time->setStyleSheet("background:transparent;");
     Time->display(TimeRecord->toString("mm:ss"));
     connect(timer, &QTimer::timeout, this, &page3::updatetime);
     timer->start(1000);
-    rightnum=0;
-    wrongnum=0;
-    num=0;
-    number=3;
-    nextpage->setParent(this);
-    nextpage->setText("跳过本题");
-    over->setParent(this);
-    over->setText("结束挑战");
-    A->setParent(this);
-    B->setParent(this);
-    C->setParent(this);
-    D->setParent(this);
-    q->setParent(this);
-    QFile inFile("..\\QandA.csv");
-    int num=0;
+    rightnum=0;wrongnum=0;num=0;number=3;newgrade=false;
+    nextpage->setText("跳过本题");over->setText("结束挑战");
+    q->setStyleSheet("QTextEdit { background-color: rgba(132, 112, 255, 15); }");
+    q->setStyleSheet(q->styleSheet() + " QTextEdit { color: black; font-size: 13pt; font-weight: bold; font-style: italic; }");
+    q->setMaximumHeight(100);over->setMinimumHeight(30);nextpage->setMinimumHeight(30);
+    QFile inFile("QandA.csv");
     if (inFile.open(QIODevice::ReadOnly))
     {
         QTextStream stream_text(&inFile);
@@ -56,9 +50,7 @@ page3::page3(QWidget *parent)
     QTime time= QTime::currentTime();
     srand(time.msec()+time.second()*1000);
     this->n= rand()%40;//产生40以内的随机数
-    if(n==0)
-        n++;
-    //qDebug()<<n;
+    if(n==0)  n++;
     question=lines.at((n-1)*8);
     answerA=lines.at((n-1)*8+1);
     answerB=lines.at((n-1)*8+2);
@@ -72,38 +64,35 @@ page3::page3(QWidget *parent)
     B->setText(answerB);
     C->setText(answerC);
     D->setText(answerD);
+    QFont font("Arial", 12);
     QList<QRadioButton*> buttons = this->findChildren<QRadioButton*>();
     foreach (QRadioButton* button, buttons) {
-        button->setStyleSheet("QRadioButton:pressed {background-color: rgb(0, 255, 0);}");
+        button->setStyleSheet("QRadioButton:pressed {background-color: rgb(0, 191, 255);}");
+        button->setMinimumHeight(20);
+        button->setFont(font);
     }
     QVBoxLayout *layout1=new QVBoxLayout;
     QHBoxLayout *layout2=new QHBoxLayout;
     layout2->addWidget(nextpage);
     layout2->addWidget(over);
+    layout1->addWidget(Time);
     layout1->addWidget(q);
     layout1->addWidget(A);
     layout1->addWidget(B);
     layout1->addWidget(C);
     layout1->addWidget(D);
-    layout1->addWidget(Time);
+    layout1->setSpacing(14);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addLayout(layout1);
     layout->addLayout(layout2);
     this->setLayout(layout);
-    //layout2->setSizeConstraint(QLayout::SetFixedSize);
-    this->flaga=false;
-    this->flagb=false;
-    this->flagc=false;
-    this->flagd=false;
-    this->haschosed=false;
+    this->flaga=false;this->flagb=false;this->flagc=false;this->flagd=false;this->haschosed=false;
     connect(A, &QRadioButton::clicked, this,[&]() {
         this->flaga=!this->flaga;
         haschosed=true;
         if(haschosed)
         {
-            B->setEnabled(false);
-            C->setEnabled(false);
-            D->setEnabled(false);
+            B->setEnabled(false);C->setEnabled(false);D->setEnabled(false);
             if(this->correctanswer=="A")
                 rightnum++;
             else
@@ -116,9 +105,7 @@ page3::page3(QWidget *parent)
         haschosed=true;
         if(haschosed)
         {
-            A->setEnabled(false);
-            C->setEnabled(false);
-            D->setEnabled(false);
+            A->setEnabled(false);C->setEnabled(false);D->setEnabled(false);
             if(this->correctanswer=="B")
                 rightnum++;
             else
@@ -131,9 +118,7 @@ page3::page3(QWidget *parent)
         haschosed=true;
         if(haschosed)
         {
-            B->setEnabled(false);
-            C->setEnabled(false);
-            A->setEnabled(false);
+            B->setEnabled(false);C->setEnabled(false);A->setEnabled(false);
             if(this->correctanswer=="C")
                 rightnum++;
             else
@@ -146,9 +131,7 @@ page3::page3(QWidget *parent)
         haschosed=true;
         if(haschosed)
         {
-            B->setEnabled(false);
-            C->setEnabled(false);
-            A->setEnabled(false);
+            B->setEnabled(false);C->setEnabled(false);A->setEnabled(false);
             if(this->correctanswer=="D")
                 rightnum++;
             else
@@ -163,30 +146,63 @@ page3::page3(QWidget *parent)
 
     connect(over,&QPushButton::clicked,this,[&](){
         this->close();
+        timer->stop();
         if(rightnum>=10)
+        {
+            if(data[3]!="TRUE\n")
+                newgrade=true;
             data[3]="TRUE\n";
+        }
         if(rightnum>=20)
+        {
+            if(data[4]!="TRUE\n")
+                newgrade=true;
             data[4]="TRUE\n";
+        }
         if(wrongnum==0&&rightnum>=30)
+        {
+            if(data[5]!="TRUE\n")
+                newgrade=true;
             data[5]="TRUE\n";
+        }
         if(rightnum==0)
+        {
+            if(data[8]!="TRUE\n")
+                newgrade=true;
             data[8]="TRUE\n";
-        writecsv("..\\achievement.csv",data);
-        tip_ *tips=new tip_(rightnum);
+        }
+        writecsv("achievement.csv",data);
+        tip_ *tips=new tip_(rightnum,newgrade);
         tips->show();
     });
     connect(this, &page3::timeup, this, [&]() {
         this->close();
         if(rightnum>=10)
+        {
+            if(data[3]!="TRUE\n")
+                newgrade=true;
             data[3]="TRUE\n";
+        }
         if(rightnum>=20)
+        {
+            if(data[4]!="TRUE\n")
+                newgrade=true;
             data[4]="TRUE\n";
+        }
         if(wrongnum==0&&rightnum>=30)
+        {
+            if(data[5]!="TRUE\n")
+                newgrade=true;
             data[5]="TRUE\n";
+        }
         if(rightnum==0)
+        {
+            if(data[8]!="TRUE\n")
+                newgrade=true;
             data[8]="TRUE\n";
-        writecsv("..\\achievement.csv",data);
-        tip_ *tips=new tip_(rightnum);
+        }
+        writecsv("achievement.csv",data);
+        tip_ *tips=new tip_(rightnum,newgrade);
         tips->show();
     });
     connect(&flash, &QTimer::timeout, this, &page3::handleflash);
@@ -199,19 +215,10 @@ page3::~page3()
 }
 void page3::switchpage(bool flaga,bool flagb,bool flagc,bool flagd,QString s,QString r,int n_)
 {
-    this->flaga=false;
-    this->flagb=false;
-    this->flagc=false;
-    this->flagd=false;
-    this->haschosed=false;
+    this->flaga=false;this->flagb=false;this->flagc=false;this->flagd=false;this->haschosed=false;
     n++;
-    q->setText(lines.at((n-1)*8));
-    A->setText(lines.at((n-1)*8+1));
-    B->setText(lines.at((n-1)*8+2));
-    C->setText(lines.at((n-1)*8+3));
-    D->setText(lines.at((n-1)*8+4));
-    correctanswer=lines.at((n-1)*8+5);
-    reason=lines.at((n-1)*8+6);
+    q->setText(lines.at((n-1)*8));A->setText(lines.at((n-1)*8+1)); B->setText(lines.at((n-1)*8+2));
+    C->setText(lines.at((n-1)*8+3));D->setText(lines.at((n-1)*8+4));correctanswer=lines.at((n-1)*8+5);reason=lines.at((n-1)*8+6);
     QList<QRadioButton*> buttons = this->findChildren<QRadioButton*>();
     foreach (QRadioButton* button, buttons) {
         button->setEnabled(true);
@@ -225,19 +232,14 @@ void page3::updatetime()
 {
     int secondsLeft = QTime(0, 0).secsTo(*TimeRecord);
     if (secondsLeft== 0) {
-        //qDebug()<<"haha";
         timer->stop();// 停止计时器
         flash.stop();
         this->close();
-        over->setVisible(false);
-        nextpage->setVisible(false);
-        Time->setVisible(true);
         emit timeup();
     }
     else {
         if(secondsLeft == 5)
         {
-            //qDebug()<<"haha";
             emit flashtime();
         }
         *TimeRecord = TimeRecord->addSecs(-1);
@@ -249,24 +251,22 @@ void page3::handleflash()
     if (!flash.isActive()) {
         flash.start(100); // 启动闪烁定时器
     }
-    //qDebug() << visible;
-    QPalette palette = Time->palette();
+    QPalette lcdpat = Time->palette();
     if (visible) {
-        Time->setStyleSheet("background:red;");
+        lcdpat.setColor(QPalette::Normal,QPalette::WindowText,Qt::blue);
     } else {
-        Time->setStyleSheet("background:black;");
+        lcdpat.setColor(QPalette::Normal,QPalette::WindowText,Qt::red);
     }
-    Time->setPalette(palette);
+    Time->setPalette(lcdpat);
     visible = !visible; // 切换可见性
 }
 void page3::writecsv(const QString& filename,  QStringList data) {
     QFile file(filename);
-    //以只写方式打开，完全重写数据
     if (file.open(QIODevice::WriteOnly))
     {
         for (int i = 0; i < data.size(); i++)
         {
-            file.write(data[i].toStdString().c_str());/*写入每一行数据到文件*/
+            file.write(data[i].toStdString().c_str());
         }
         file.close();
     }
@@ -281,7 +281,6 @@ void page3::readcsv(const QString& filename)
         {
             QString line = stream_text.readLine();
             line.append("\n"); // 添加换行符
-            //qDebug()<<line;
             data.append(line);
         }
         file.close();

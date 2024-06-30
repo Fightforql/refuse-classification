@@ -28,7 +28,7 @@ void work(){
     TypeidToTypename[3][3]="餐厨垃圾";
     TypeidToTypename[3][2]="有害垃圾";
     TypeidToTypename[3][4]="其它垃圾";
-    FILE *fp=fopen("..\\garbage.csv","r");
+    FILE *fp=fopen("D:\\qt\\LaLaLa\\projectdemo\\garbage.csv","r");
     char line[2000];
     char name[200];
     memset(name,0,sizeof(name));
@@ -190,7 +190,7 @@ vector<ret> listcustom(int cityid){
 }
 //书
 void readcustomdic(){
-    FILE *fp=fopen("..\\customdic.csv","r");
+    FILE *fp=fopen("customdic.csv","r");
     if (fp==NULL)   return;
     char line[2000];
     char name[200];
@@ -240,7 +240,7 @@ void readcustomdic(){
     fclose(fp);
 }
 void writecustomdic(){
-    FILE *fp=fopen("..\\customdic.csv","w");
+    FILE *fp=fopen("customdic.csv","w");
     for (auto &i:GarbageidToTypeid[1]){
         if (i.second>=16){//这个是我们自己添加进去的垃圾
             for (auto &j:NameToId){

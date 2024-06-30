@@ -13,17 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>20</y>
-     <width>221</width>
-     <height>70</height>
-    </rect>
-   </property>
-  </widget>
+  <property name="windowIcon">
+   <iconset resource="title.qrc">
+    <normaloff>:/function3title/title4.png</normaloff>:/function3title/title4.png</iconset>
+  </property>
  </widget>
- <resources/>
+ <resources>
+  <include location="title.qrc"/>
+ </resources>
  <connections/>
 </ui>
