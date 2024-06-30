@@ -1,0 +1,33 @@
+{
+	"BUILD_DIR" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release/projectdemo_autogen",
+	"CMAKE_BINARY_DIR" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/Programming/refuse-classification/projectdemo",
+	"CMAKE_SOURCE_DIR" : "D:/Programming/refuse-classification/projectdemo",
+	"INCLUDE_DIR" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release/projectdemo_autogen/include",
+	"INPUTS" : 
+	[
+		"D:/Programming/refuse-classification/projectdemo/background1.jpg",
+		"D:/Programming/refuse-classification/projectdemo/\u94c2\u91d1.png",
+		"D:/Programming/refuse-classification/projectdemo/\u7d2b\u5b9d\u77f3.png",
+		"D:/Programming/refuse-classification/projectdemo/\u9ec4\u91d1.png",
+		"D:/Programming/refuse-classification/projectdemo/\u767d\u91d1.png",
+		"D:/Programming/refuse-classification/projectdemo/\u9ec4\u94dc\u7ae0.png",
+		"D:/Programming/refuse-classification/projectdemo/\u7eff\u5b9d\u77f3.png",
+		"D:/Programming/refuse-classification/projectdemo/\u94f6\u7ae0.png",
+		"D:/Programming/refuse-classification/projectdemo/\u51a0\u519b.png",
+		"D:/Programming/refuse-classification/projectdemo/\u7ea2\u5b9d\u77f3.png",
+		"D:/Programming/refuse-classification/projectdemo/\u94bb\u77f3.png",
+		"D:/Programming/refuse-classification/projectdemo/background_function3.jpg"
+	],
+	"LOCK_FILE" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release/CMakeFiles/projectdemo_autogen.dir/AutoRcc_material_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "material" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_material.cpp",
+	"RCC_EXECUTABLE" : "D:/Qt/6.6.0/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "D:/Programming/refuse-classification/projectdemo/build-projectdemo-Desktop_Qt_6_6_0_MinGW_64_bit-Release/CMakeFiles/projectdemo_autogen.dir/AutoRcc_material_EWIEGA46WW_Used.txt",
+	"SOURCE" : "D:/Programming/refuse-classification/projectdemo/material.qrc",
+	"VERBOSITY" : 0
+}
